@@ -10,6 +10,7 @@ import com.saddss.shortlink.admin.common.enums.UserErrorCodeEnum;
 import com.saddss.shortlink.admin.dao.entity.UserDO;
 import com.saddss.shortlink.admin.dao.mapper.UserMapper;
 import com.saddss.shortlink.admin.dto.req.UserRegisterReqDto;
+import com.saddss.shortlink.admin.dto.req.UserUpdateReqDto;
 import com.saddss.shortlink.admin.dto.resp.UserRespDto;
 import com.saddss.shortlink.admin.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -62,5 +63,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
         } finally{
             lock.unlock();
         }
+    }
+
+    @Override
+    public void update(UserUpdateReqDto requestParam) {
+        //todo 验证当前登录用户与要修改的用户是否相同
+        LambdaQueryWrapper<UserDO> updateWrapper = Wrappers.lambdaQuery(UserDO.class)
+                .eq(UserDO::getUsername, requestParam.getUsername());
+        baseMapper.update(BeanUtil.toBean(requestParam, UserDO.class), updateWrapper);
     }
 }

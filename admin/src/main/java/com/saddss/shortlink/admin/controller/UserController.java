@@ -3,6 +3,7 @@ package com.saddss.shortlink.admin.controller;
 import com.saddss.shortlink.admin.common.convention.result.Result;
 import com.saddss.shortlink.admin.common.convention.result.Results;
 import com.saddss.shortlink.admin.dto.req.UserRegisterReqDto;
+import com.saddss.shortlink.admin.dto.req.UserUpdateReqDto;
 import com.saddss.shortlink.admin.dto.resp.UserRespDto;
 import com.saddss.shortlink.admin.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -40,6 +41,15 @@ public class UserController {
     @PostMapping("/api/short-link/admin/v1/user")
     public Result<Void> register(@RequestBody UserRegisterReqDto requestParam){
         userService.register(requestParam);
+        return Results.success();
+    }
+
+    /**
+     * 修改用户信息
+     */
+    @PutMapping("/api/short-link/admin/v1/user")
+    public Result<Void> update(@RequestBody UserUpdateReqDto requestParam){
+        userService.update(requestParam);
         return Results.success();
     }
 }
