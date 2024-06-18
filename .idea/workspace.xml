@@ -4,15 +4,48 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="737e3790-12b0-4d1d-96b3-4bb36f38da4f" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/admin/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin/src/main/java/com/saddss/shortlink/Main.java" afterDir="false" />
+    <list default="true" id="737e3790-12b0-4d1d-96b3-4bb36f38da4f" name="Changes" comment="创建admin、project、gateway模块">
+      <change afterPath="$PROJECT_DIR$/.idea/git_toolbox_prj.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/admin/src/main/java/com/saddss/shortlink/admin/ShortLinkAdminApplication.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/admin/src/main/java/com/saddss/shortlink/admin/common/convention/errorcode/BaseErrorCode.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/admin/src/main/java/com/saddss/shortlink/admin/common/convention/errorcode/IErrorCode.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/admin/src/main/java/com/saddss/shortlink/admin/common/convention/exception/AbstractException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/admin/src/main/java/com/saddss/shortlink/admin/common/convention/exception/ClientException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/admin/src/main/java/com/saddss/shortlink/admin/common/convention/exception/RemoteException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/admin/src/main/java/com/saddss/shortlink/admin/common/convention/exception/ServiceException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/admin/src/main/java/com/saddss/shortlink/admin/common/convention/result/Result.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/admin/src/main/java/com/saddss/shortlink/admin/common/convention/result/Results.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/admin/src/main/java/com/saddss/shortlink/admin/common/enums/UserErrorCodeEnum.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/admin/src/main/java/com/saddss/shortlink/admin/common/web/GlobalExceptionHandler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/admin/src/main/java/com/saddss/shortlink/admin/controller/UserController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/admin/src/main/java/com/saddss/shortlink/admin/dao/entity/UserDO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/admin/src/main/java/com/saddss/shortlink/admin/dao/mapper/UserMapper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/admin/src/main/java/com/saddss/shortlink/admin/dto/resp/UserRespDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/admin/src/main/java/com/saddss/shortlink/admin/service/UserService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/admin/src/main/java/com/saddss/shortlink/admin/service/impl/UserServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/admin/src/main/resources/application.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gateway/src/main/resources/application.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/project/src/main/resources/application.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/admin/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/project/pom.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CodeInsightWorkspaceSettings">
+    <option name="optimizeImportsOnTheFly" value="true" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Interface" />
+        <option value="Class" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
@@ -22,6 +55,7 @@
     </option>
   </component>
   <component name="GitToolBoxStore">
+    <option name="projectConfigVersion" value="5" />
     <option name="recentBranches">
       <RecentBranches>
         <option name="branchesForRepo">
@@ -66,19 +100,54 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "WebServerToolWindowFactoryState": "false",
     "jdk.selected.JAVA_MODULE": "azul-17",
+    "last_opened_file_path": "F:/桌面/project/shortlink/admin",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.20625",
+    "settings.editor.selected.configurable": "editor.preferences.import",
+    "spring.configuration.checksum": "e513637ab6b53f29d531a095ed85b7ec",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="F:\work\project\shortlink\project\src\main\resources" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="ShortLinkAdminApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
+      <module name="shortlink-admin" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.saddss.shortlink.admin.ShortLinkAdminApplication" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.saddss.shortlink.admin.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Spring Boot.ShortLinkAdminApplication" />
+      </list>
+    </recent_temporary>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -87,8 +156,17 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1718622288319</updated>
-      <workItem from="1718622288708" duration="335000" />
+      <workItem from="1718622288708" duration="1436000" />
+      <workItem from="1718623740289" duration="8595000" />
     </task>
+    <task id="LOCAL-00001" summary="创建admin、project、gateway模块">
+      <created>1718622904117</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1718622904117</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -116,5 +194,25 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="创建admin、project、gateway模块" />
+    <option name="LAST_COMMIT_MESSAGE" value="创建admin、project、gateway模块" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint type="java-method">
+          <url>jar://$MAVEN_REPOSITORY$/org/springframework/boot/spring-boot-autoconfigure/3.0.7/spring-boot-autoconfigure-3.0.7.jar!/org/springframework/boot/autoconfigure/jdbc/DataSourceProperties.class</url>
+          <line>85</line>
+          <properties class="org.springframework.boot.autoconfigure.jdbc.DataSourceProperties" method="setDriverClassName">
+            <option name="EMULATED" value="true" />
+            <option name="WATCH_EXIT" value="false" />
+          </properties>
+          <option name="temporary" value="true" />
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>
