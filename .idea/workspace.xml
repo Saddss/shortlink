@@ -4,32 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="737e3790-12b0-4d1d-96b3-4bb36f38da4f" name="Changes" comment="创建admin、project、gateway模块">
-      <change afterPath="$PROJECT_DIR$/.idea/git_toolbox_prj.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin/src/main/java/com/saddss/shortlink/admin/ShortLinkAdminApplication.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin/src/main/java/com/saddss/shortlink/admin/common/convention/errorcode/BaseErrorCode.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin/src/main/java/com/saddss/shortlink/admin/common/convention/errorcode/IErrorCode.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin/src/main/java/com/saddss/shortlink/admin/common/convention/exception/AbstractException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin/src/main/java/com/saddss/shortlink/admin/common/convention/exception/ClientException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin/src/main/java/com/saddss/shortlink/admin/common/convention/exception/RemoteException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin/src/main/java/com/saddss/shortlink/admin/common/convention/exception/ServiceException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin/src/main/java/com/saddss/shortlink/admin/common/convention/result/Result.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin/src/main/java/com/saddss/shortlink/admin/common/convention/result/Results.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin/src/main/java/com/saddss/shortlink/admin/common/enums/UserErrorCodeEnum.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin/src/main/java/com/saddss/shortlink/admin/common/web/GlobalExceptionHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin/src/main/java/com/saddss/shortlink/admin/controller/UserController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin/src/main/java/com/saddss/shortlink/admin/dao/entity/UserDO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin/src/main/java/com/saddss/shortlink/admin/dao/mapper/UserMapper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin/src/main/java/com/saddss/shortlink/admin/dto/resp/UserRespDto.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin/src/main/java/com/saddss/shortlink/admin/service/UserService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin/src/main/java/com/saddss/shortlink/admin/service/impl/UserServiceImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin/src/main/resources/application.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gateway/src/main/resources/application.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/project/src/main/resources/application.yaml" afterDir="false" />
+    <list default="true" id="737e3790-12b0-4d1d-96b3-4bb36f38da4f" name="Changes" comment="异常码的设计：接口——》枚举，可自定义拓展&#10;统一全局返回类封装Results实现，success、failure的使用&#10;抽象异常类设计，三个实现类&#10;全局统一异常处理器&#10;&#10;抛出异常后，由全局统一异常处理器进行捕获，打印异常相关信息，并且使用Results中的failure方法进行处理封装为统一返回实体进行返回。&#10;&#10;异常类的getCause方法用于获得原始异常，即嵌套异常发生时的最初异常">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/admin/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/project/pom.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -157,7 +133,7 @@
       <option name="presentableId" value="Default" />
       <updated>1718622288319</updated>
       <workItem from="1718622288708" duration="1436000" />
-      <workItem from="1718623740289" duration="8595000" />
+      <workItem from="1718623740289" duration="9796000" />
     </task>
     <task id="LOCAL-00001" summary="创建admin、project、gateway模块">
       <created>1718622904117</created>
@@ -166,7 +142,14 @@
       <option name="project" value="LOCAL" />
       <updated>1718622904117</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="异常码的设计：接口——》枚举，可自定义拓展&#10;统一全局返回类封装Results实现，success、failure的使用&#10;抽象异常类设计，三个实现类&#10;全局统一异常处理器&#10;&#10;抛出异常后，由全局统一异常处理器进行捕获，打印异常相关信息，并且使用Results中的failure方法进行处理封装为统一返回实体进行返回。&#10;&#10;异常类的getCause方法用于获得原始异常，即嵌套异常发生时的最初异常">
+      <created>1718678863478</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1718678863478</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -197,7 +180,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="创建admin、project、gateway模块" />
-    <option name="LAST_COMMIT_MESSAGE" value="创建admin、project、gateway模块" />
+    <MESSAGE value="异常码的设计：接口——》枚举，可自定义拓展&#10;统一全局返回类封装Results实现，success、failure的使用&#10;抽象异常类设计，三个实现类&#10;全局统一异常处理器&#10;&#10;抛出异常后，由全局统一异常处理器进行捕获，打印异常相关信息，并且使用Results中的failure方法进行处理封装为统一返回实体进行返回。&#10;&#10;异常类的getCause方法用于获得原始异常，即嵌套异常发生时的最初异常" />
+    <option name="LAST_COMMIT_MESSAGE" value="异常码的设计：接口——》枚举，可自定义拓展&#10;统一全局返回类封装Results实现，success、failure的使用&#10;抽象异常类设计，三个实现类&#10;全局统一异常处理器&#10;&#10;抛出异常后，由全局统一异常处理器进行捕获，打印异常相关信息，并且使用Results中的failure方法进行处理封装为统一返回实体进行返回。&#10;&#10;异常类的getCause方法用于获得原始异常，即嵌套异常发生时的最初异常" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

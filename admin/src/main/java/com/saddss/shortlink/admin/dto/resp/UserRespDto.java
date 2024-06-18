@@ -1,5 +1,7 @@
 package com.saddss.shortlink.admin.dto.resp;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.saddss.shortlink.admin.common.serialize.PhoneDesensitizationSerializer;
 import lombok.Data;
 
 @Data
@@ -22,6 +24,7 @@ public class UserRespDto {
     /**
      * 手机号
      */
+    @JsonSerialize(using = PhoneDesensitizationSerializer.class)
     private String phone;
 
     /**
