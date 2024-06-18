@@ -2,8 +2,10 @@ package com.saddss.shortlink.admin.controller;
 
 import com.saddss.shortlink.admin.common.convention.result.Result;
 import com.saddss.shortlink.admin.common.convention.result.Results;
+import com.saddss.shortlink.admin.dto.req.UserLoginReqDTO;
 import com.saddss.shortlink.admin.dto.req.UserRegisterReqDto;
 import com.saddss.shortlink.admin.dto.req.UserUpdateReqDto;
+import com.saddss.shortlink.admin.dto.resp.UserLoginRespDTO;
 import com.saddss.shortlink.admin.dto.resp.UserRespDto;
 import com.saddss.shortlink.admin.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -51,5 +53,13 @@ public class UserController {
     public Result<Void> update(@RequestBody UserUpdateReqDto requestParam){
         userService.update(requestParam);
         return Results.success();
+    }
+
+    /**
+     * 用户登录
+     */
+    @PostMapping("/api/short-link/admin/v1/user/login")
+    public Result<UserLoginRespDTO> login(@RequestBody UserLoginReqDTO requestParam){
+        return Results.success(userService.login(requestParam));
     }
 }
