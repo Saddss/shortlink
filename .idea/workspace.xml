@@ -4,11 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="737e3790-12b0-4d1d-96b3-4bb36f38da4f" name="Changes" comment="用户手机号脱敏处理，拓展jackson序列号器的使用，结合hutool的工具类将指定字段用自定义序列化器进行处理，脱敏后写回">
+    <list default="true" id="737e3790-12b0-4d1d-96b3-4bb36f38da4f" name="Changes" comment="查询用户名是否存在（是否可用）接口实现">
+      <change afterPath="$PROJECT_DIR$/admin/src/main/java/com/saddss/shortlink/admin/config/RBloomFilterConfiguration.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/admin/src/main/java/com/saddss/shortlink/admin/dto/req/UserRegisterReqDto.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/admin/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/admin/src/main/java/com/saddss/shortlink/admin/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/admin/src/main/java/com/saddss/shortlink/admin/controller/UserController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/admin/src/main/java/com/saddss/shortlink/admin/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/admin/src/main/java/com/saddss/shortlink/admin/service/UserService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/admin/src/main/java/com/saddss/shortlink/admin/service/impl/UserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/admin/src/main/java/com/saddss/shortlink/admin/service/impl/UserServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/src/main/resources/application.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/admin/src/main/resources/application.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -136,7 +140,7 @@
       <option name="presentableId" value="Default" />
       <updated>1718622288319</updated>
       <workItem from="1718622288708" duration="1436000" />
-      <workItem from="1718623740289" duration="10513000" />
+      <workItem from="1718623740289" duration="13732000" />
     </task>
     <task id="LOCAL-00001" summary="创建admin、project、gateway模块">
       <created>1718622904117</created>
@@ -159,7 +163,14 @@
       <option name="project" value="LOCAL" />
       <updated>1718680199957</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="查询用户名是否存在（是否可用）接口实现">
+      <created>1718680835853</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1718680835853</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -192,7 +203,8 @@
     <MESSAGE value="创建admin、project、gateway模块" />
     <MESSAGE value="异常码的设计：接口——》枚举，可自定义拓展&#10;统一全局返回类封装Results实现，success、failure的使用&#10;抽象异常类设计，三个实现类&#10;全局统一异常处理器&#10;&#10;抛出异常后，由全局统一异常处理器进行捕获，打印异常相关信息，并且使用Results中的failure方法进行处理封装为统一返回实体进行返回。&#10;&#10;异常类的getCause方法用于获得原始异常，即嵌套异常发生时的最初异常" />
     <MESSAGE value="用户手机号脱敏处理，拓展jackson序列号器的使用，结合hutool的工具类将指定字段用自定义序列化器进行处理，脱敏后写回" />
-    <option name="LAST_COMMIT_MESSAGE" value="用户手机号脱敏处理，拓展jackson序列号器的使用，结合hutool的工具类将指定字段用自定义序列化器进行处理，脱敏后写回" />
+    <MESSAGE value="查询用户名是否存在（是否可用）接口实现" />
+    <option name="LAST_COMMIT_MESSAGE" value="查询用户名是否存在（是否可用）接口实现" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
