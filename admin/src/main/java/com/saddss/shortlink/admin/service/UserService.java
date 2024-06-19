@@ -37,4 +37,9 @@ public interface UserService extends IService<UserDO> {
      * @return token
      */
     UserLoginRespDTO login(UserLoginReqDTO userLoginReqDTO);
+
+    /**
+     * 检测用户是否登录
+     */
+    Boolean checkLogin(String username, String token);
 }

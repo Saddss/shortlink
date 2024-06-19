@@ -93,7 +93,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
             throw new ClientException(UserErrorCodeEnum.USERNAME_OR_PASSWORD_ERROR);
         }
         String uuid = UUID.randomUUID().toString();
-        stringRedisTemplate.opsForValue().set(uuid, JSON.toJSONString(userLoginReqDTO), 30L, TimeUnit.MINUTES);
+        stringRedisTemplate.opsForHash().put(RedisCacheConstant.USER_LOGIN_KEY + userLoginReqDTO.getUsername(), uuid, JSON.toJSONString(userDO));
+        stringRedisTemplate.expire(RedisCacheConstant.USER_LOGIN_KEY + userLoginReqDTO.getUsername(), 30L, TimeUnit.MINUTES);
         return new UserLoginRespDTO(uuid);
+    }
+
+    @Override
+    public Boolean checkLogin(String username, String token) {
+        return stringRedisTemplate.opsForHash().get(RedisCacheConstant.USER_LOGIN_KEY + username, token) != null;
     }
 }
