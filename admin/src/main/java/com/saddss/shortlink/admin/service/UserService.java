@@ -44,4 +44,9 @@ public interface UserService extends IService<UserDO> {
      * @param token token值（即生成的uuid）
      */
     Boolean checkLogin(String username, String token);
+
+    /**
+     * 退出登录
+     */
+    void logout(String username, String token);
 }
