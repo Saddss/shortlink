@@ -36,10 +36,12 @@ public interface UserService extends IService<UserDO> {
      * 用户登录
      * @return token
      */
-    UserLoginRespDTO login(UserLoginReqDTO userLoginReqDTO);
+    UserLoginRespDTO login(UserLoginReqDTO requestParam);
 
     /**
      * 检测用户是否登录
+     * @param username 用户名
+     * @param token token值（即生成的uuid）
      */
     Boolean checkLogin(String username, String token);
 }

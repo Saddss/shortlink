@@ -83,18 +83,21 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
     }
 
     @Override
-    public UserLoginRespDTO login(UserLoginReqDTO userLoginReqDTO) {
+    public UserLoginRespDTO login(UserLoginReqDTO requestParam) {
         LambdaQueryWrapper<UserDO> queryWrapper = Wrappers.lambdaQuery(UserDO.class)
-                .eq(UserDO::getUsername, userLoginReqDTO.getUsername())
-                .eq(UserDO::getPassword, userLoginReqDTO.getPassword())
+                .eq(UserDO::getUsername, requestParam.getUsername())
+                .eq(UserDO::getPassword, requestParam.getPassword())
                 .eq(UserDO::getDelFlag, 0);
         UserDO userDO = baseMapper.selectOne(queryWrapper);
         if (userDO == null){
             throw new ClientException(UserErrorCodeEnum.USERNAME_OR_PASSWORD_ERROR);
         }
+        if (stringRedisTemplate.hasKey(RedisCacheConstant.USER_LOGIN_KEY + requestParam.getUsername())){
+            throw new ClientException(UserErrorCodeEnum.USER_HAS_LOGGED);
+        }
         String uuid = UUID.randomUUID().toString();
-        stringRedisTemplate.opsForHash().put(RedisCacheConstant.USER_LOGIN_KEY + userLoginReqDTO.getUsername(), uuid, JSON.toJSONString(userDO));
-        stringRedisTemplate.expire(RedisCacheConstant.USER_LOGIN_KEY + userLoginReqDTO.getUsername(), 30L, TimeUnit.MINUTES);
+        stringRedisTemplate.opsForHash().put(RedisCacheConstant.USER_LOGIN_KEY + requestParam.getUsername(), uuid, JSON.toJSONString(userDO));
+        stringRedisTemplate.expire(RedisCacheConstant.USER_LOGIN_KEY + requestParam.getUsername(), 30L, TimeUnit.MINUTES);
         return new UserLoginRespDTO(uuid);
     }
 
