@@ -21,10 +21,13 @@ public class UserTransmitFilter implements Filter {
         HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
         String username = httpServletRequest.getHeader("username");
         String token = httpServletRequest.getHeader("token");
-        Object userDO = stringRedisTemplate.opsForHash().get(RedisCacheConstant.USER_LOGIN_KEY + username, token);
-        if (userDO != null){
-            UserInfoDTO userInfoDTO = JSON.parseObject(userDO.toString(), UserInfoDTO.class);
-            UserContext.setUser(userInfoDTO);
+        String requestURI = ((HttpServletRequest) servletRequest).getRequestURI();
+        if (!requestURI.equals("/api/short-link/admin/v1/user/login")){
+            Object userDO = stringRedisTemplate.opsForHash().get(RedisCacheConstant.USER_LOGIN_KEY + username, token);
+            if (userDO != null){
+                UserInfoDTO userInfoDTO = JSON.parseObject(userDO.toString(), UserInfoDTO.class);
+                UserContext.setUser(userInfoDTO);
+            }
         }
         try {
             filterChain.doFilter(servletRequest, servletResponse);
