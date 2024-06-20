@@ -3,6 +3,7 @@ package com.saddss.shortlink.admin.controller;
 import com.saddss.shortlink.admin.common.convention.result.Result;
 import com.saddss.shortlink.admin.common.convention.result.Results;
 import com.saddss.shortlink.admin.dto.req.ShortLinkGroupSaveReqDTO;
+import com.saddss.shortlink.admin.dto.req.ShortLinkGroupSortReqDTO;
 import com.saddss.shortlink.admin.dto.req.ShortLinkGroupUpdateReqDTO;
 import com.saddss.shortlink.admin.dto.resp.ShortLinkGroupRespDTO;
 import com.saddss.shortlink.admin.service.GroupService;
@@ -51,6 +52,15 @@ public class GroupController {
     @DeleteMapping("/api/short-link/admin/v1/group")
     public Result<Void> deleteGroup(@RequestParam("gid") String gid){
         groupService.deleteGroup(gid);
+        return Results.success();
+    }
+
+    /**
+     * 短链接分组排序
+     */
+    @PostMapping("/api/short-link/admin/v1/group/sort")
+    public Result<Void> sortGroup(@RequestBody List<ShortLinkGroupSortReqDTO> requestParam){
+        groupService.sortGroup(requestParam);
         return Results.success();
     }
 }

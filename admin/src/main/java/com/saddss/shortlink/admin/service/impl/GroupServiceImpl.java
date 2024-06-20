@@ -10,6 +10,7 @@ import com.saddss.shortlink.admin.common.biz.user.UserContext;
 import com.saddss.shortlink.admin.dao.entity.GroupDO;
 import com.saddss.shortlink.admin.dao.mapper.GroupMapper;
 import com.saddss.shortlink.admin.dto.req.ShortLinkGroupSaveReqDTO;
+import com.saddss.shortlink.admin.dto.req.ShortLinkGroupSortReqDTO;
 import com.saddss.shortlink.admin.dto.req.ShortLinkGroupUpdateReqDTO;
 import com.saddss.shortlink.admin.dto.resp.ShortLinkGroupRespDTO;
 import com.saddss.shortlink.admin.service.GroupService;
@@ -65,6 +66,20 @@ public class GroupServiceImpl extends ServiceImpl<GroupMapper, GroupDO> implemen
         GroupDO groupDO = new GroupDO();
         groupDO.setDelFlag(1);
         baseMapper.update(groupDO, updateWrapper);
+    }
+
+    @Override
+    public void sortGroup(List<ShortLinkGroupSortReqDTO> requestParam) {
+        requestParam.forEach(each ->{
+            GroupDO groupDO = GroupDO.builder()
+                    .sortOrder(each.getSortOrder())
+                    .build();
+            LambdaUpdateWrapper<GroupDO> updateWrapper = Wrappers.lambdaUpdate(GroupDO.class)
+                    .eq(GroupDO::getDelFlag, 0)
+                    .eq(GroupDO::getUsername, UserContext.getUsername())
+                    .eq(GroupDO::getGid, each.getGid());
+            baseMapper.update(groupDO, updateWrapper);
+        });
     }
 
     private boolean hasGid(String gid){
