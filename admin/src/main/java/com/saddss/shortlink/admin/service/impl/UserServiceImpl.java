@@ -11,11 +11,13 @@ import com.saddss.shortlink.admin.common.convention.exception.ClientException;
 import com.saddss.shortlink.admin.common.enums.UserErrorCodeEnum;
 import com.saddss.shortlink.admin.dao.entity.UserDO;
 import com.saddss.shortlink.admin.dao.mapper.UserMapper;
+import com.saddss.shortlink.admin.dto.req.ShortLinkGroupSaveReqDTO;
 import com.saddss.shortlink.admin.dto.req.UserLoginReqDTO;
 import com.saddss.shortlink.admin.dto.req.UserRegisterReqDto;
 import com.saddss.shortlink.admin.dto.req.UserUpdateReqDto;
 import com.saddss.shortlink.admin.dto.resp.UserLoginRespDTO;
 import com.saddss.shortlink.admin.dto.resp.UserRespDto;
+import com.saddss.shortlink.admin.service.GroupService;
 import com.saddss.shortlink.admin.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.redisson.api.RBloomFilter;
@@ -37,6 +39,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
     private final RedissonClient redissonClient;
 
     private final StringRedisTemplate stringRedisTemplate;
+    private final GroupService groupService;
     @Override
     public UserRespDto getUserByUsername(String username) {
         LambdaQueryWrapper<UserDO> queryWrapper = Wrappers.lambdaQuery(UserDO.class)
@@ -69,6 +72,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
                     throw new ClientException(UserErrorCodeEnum.USER_SAVE_ERROR);
                 }
                 userRegisterCachePenetrationBloomFilter.add(requestParam.getUsername());
+                groupService.saveGroup(requestParam.getUsername(), new ShortLinkGroupSaveReqDTO("默认分组"));
                 return;
             }
             throw new ClientException(UserErrorCodeEnum.USER_NAME_EXIST);

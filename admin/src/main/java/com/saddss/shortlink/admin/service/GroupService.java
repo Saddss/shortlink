@@ -18,6 +18,12 @@ public interface GroupService extends IService<GroupDO> {
     void saveGroup(ShortLinkGroupSaveReqDTO requestParam);
 
     /**
+     * 新增短链接分组(重载参数，用于注册后生成默认分组）
+     * @param requestParam 入参
+     */
+    void saveGroup(String username, ShortLinkGroupSaveReqDTO requestParam);
+
+    /**
      * 查询短链接分组
      */
     List<ShortLinkGroupRespDTO> listGroup();
