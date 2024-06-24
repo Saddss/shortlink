@@ -5,6 +5,7 @@ import com.alibaba.fastjson2.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.saddss.shortlink.admin.common.biz.user.UserContext;
 import com.saddss.shortlink.admin.common.constant.RedisCacheConstant;
 import com.saddss.shortlink.admin.common.convention.exception.ClientException;
 import com.saddss.shortlink.admin.common.enums.UserErrorCodeEnum;
@@ -76,7 +77,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
 
     @Override
     public void update(UserUpdateReqDto requestParam) {
-        //todo 验证当前登录用户与要修改的用户是否相同
+        String loginUserName = UserContext.getUsername();
+        if (!loginUserName.equals(requestParam.getUsername())){
+            throw new ClientException("不可修改其他用户信息");
+        }
         LambdaQueryWrapper<UserDO> updateWrapper = Wrappers.lambdaQuery(UserDO.class)
                 .eq(UserDO::getUsername, requestParam.getUsername());
         baseMapper.update(BeanUtil.toBean(requestParam, UserDO.class), updateWrapper);
