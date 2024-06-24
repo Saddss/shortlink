@@ -19,7 +19,7 @@ import java.util.Map;
 public interface ShortLinkRemoteService {
 
     default Result<ShortLinkCreateRespDTO> createShortLink(ShortLinkCreateReqDTO requestParam){
-        String resultBodyStr = HttpUtil.post("http://127.0.0.1:8001/api/short-link/admin/v1/create", JSON.toJSONString(requestParam));
+        String resultBodyStr = HttpUtil.post("http://127.0.0.1:8001/api/short-link/v1/create", JSON.toJSONString(requestParam));
         return JSON.parseObject(resultBodyStr, new TypeReference<Result<ShortLinkCreateRespDTO>>(){});
 
     }
@@ -28,7 +28,7 @@ public interface ShortLinkRemoteService {
         requestMap.put("gid", requestParam.getGid());
         requestMap.put("current", requestParam.getCurrent());
         requestMap.put("size", requestParam.getSize());
-        String resultPageStr = HttpUtil.get("http://127.0.0.1:8001/api/short-link/admin/v1/page", requestMap);
+        String resultPageStr = HttpUtil.get("http://127.0.0.1:8001/api/short-link/v1/page", requestMap);
         return JSON.parseObject(resultPageStr, new TypeReference<Result<IPage<ShortLinkPageRespDTO>>>(){});
     }
 }
