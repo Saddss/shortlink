@@ -13,14 +13,21 @@ import com.saddss.shortlink.admin.dto.req.ShortLinkGroupSaveReqDTO;
 import com.saddss.shortlink.admin.dto.req.ShortLinkGroupSortReqDTO;
 import com.saddss.shortlink.admin.dto.req.ShortLinkGroupUpdateReqDTO;
 import com.saddss.shortlink.admin.dto.resp.ShortLinkGroupRespDTO;
+import com.saddss.shortlink.admin.remote.ShortLinkRemoteService;
+import com.saddss.shortlink.admin.remote.dto.resp.ShortLinkGroupCountQueryRespDTO;
 import com.saddss.shortlink.admin.service.GroupService;
 import com.saddss.shortlink.admin.util.RandomGenerator;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class GroupServiceImpl extends ServiceImpl<GroupMapper, GroupDO> implements GroupService {
+
+    ShortLinkRemoteService shortLinkRemoteService = new ShortLinkRemoteService() {
+    };
     @Override
     public void saveGroup(ShortLinkGroupSaveReqDTO requestParam) {
         String gid = RandomGenerator.generateRandom();
@@ -43,7 +50,15 @@ public class GroupServiceImpl extends ServiceImpl<GroupMapper, GroupDO> implemen
                 .eq(GroupDO::getDelFlag, 0)
                 .orderByDesc(GroupDO::getSortOrder, GroupDO::getUpdateTime);
         List<GroupDO> groupDOList = baseMapper.selectList(queryWrapper);
-        return BeanUtil.copyToList(groupDOList, ShortLinkGroupRespDTO.class);
+        List<ShortLinkGroupRespDTO> results = BeanUtil.copyToList(groupDOList, ShortLinkGroupRespDTO.class);
+        List<ShortLinkGroupCountQueryRespDTO> gids = shortLinkRemoteService.getShortLinkCountInGroup(groupDOList.stream()
+                .map(GroupDO::getGid)
+                .collect(Collectors.toList())).getData();
+        Map<String, Integer> gidAndCounts = gids.stream()
+                .collect(Collectors.toMap(ShortLinkGroupCountQueryRespDTO::getGid, ShortLinkGroupCountQueryRespDTO::getShortLinkCount));
+        return results.stream()
+                .peek(result -> result.setShortLinkCount(gidAndCounts.getOrDefault(result.getGid(), 0)))
+                .collect(Collectors.toList());
     }
 
     @Override
