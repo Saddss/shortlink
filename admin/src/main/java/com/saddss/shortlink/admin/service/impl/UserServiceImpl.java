@@ -3,6 +3,7 @@ package com.saddss.shortlink.admin.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import com.alibaba.fastjson2.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.saddss.shortlink.admin.common.biz.user.UserContext;
@@ -87,7 +88,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
         if (!loginUserName.equals(requestParam.getUsername())){
             throw new ClientException("不可修改其他用户信息");
         }
-        LambdaQueryWrapper<UserDO> updateWrapper = Wrappers.lambdaQuery(UserDO.class)
+        LambdaUpdateWrapper<UserDO> updateWrapper = Wrappers.lambdaUpdate(UserDO.class)
                 .eq(UserDO::getUsername, requestParam.getUsername());
         baseMapper.update(BeanUtil.toBean(requestParam, UserDO.class), updateWrapper);
     }
