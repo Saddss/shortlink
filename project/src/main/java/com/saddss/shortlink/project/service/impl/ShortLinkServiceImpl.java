@@ -12,6 +12,8 @@ import com.saddss.shortlink.project.common.convention.exception.ClientException;
 import com.saddss.shortlink.project.common.convention.exception.ServiceException;
 import com.saddss.shortlink.project.common.enums.VailDateTypeEnum;
 import com.saddss.shortlink.project.dao.entity.ShortLinkDO;
+import com.saddss.shortlink.project.dao.entity.ShortLinkGotoDO;
+import com.saddss.shortlink.project.dao.mapper.ShortLinkGotoMapper;
 import com.saddss.shortlink.project.dao.mapper.ShortLinkMapper;
 import com.saddss.shortlink.project.dto.req.ShortLinkCreateReqDTO;
 import com.saddss.shortlink.project.dto.req.ShortLinkPageReqDTO;
@@ -39,7 +41,9 @@ import java.util.UUID;
 public class ShortLinkServiceImpl extends ServiceImpl<ShortLinkMapper, ShortLinkDO> implements ShortLinkService {
 
     private final RBloomFilter<String> shortUriCreateCachePenetrationBloomFilter;
+    private final ShortLinkGotoMapper shortLinkGotoMapper;
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public ShortLinkCreateRespDTO createShortLink(ShortLinkCreateReqDTO requestParam) {
         String shortLinkSuffix = genSuffix(requestParam);
         String fullShortUrl = StrBuilder.create(requestParam.getDomain())
@@ -62,8 +66,13 @@ public class ShortLinkServiceImpl extends ServiceImpl<ShortLinkMapper, ShortLink
                 .delTime(0L)
                 .fullShortUrl(fullShortUrl)
                 .build();
+        ShortLinkGotoDO shortLinkGotoDO = ShortLinkGotoDO.builder()
+                .fullShortUrl(fullShortUrl)
+                .gid(requestParam.getGid())
+                .build();
         try {
             baseMapper.insert(shortLinkDO);
+            shortLinkGotoMapper.insert(shortLinkGotoDO);
         } catch (DuplicateKeyException ex) {
             log.warn("短链接: {} 重复入库", fullShortUrl);
         }
