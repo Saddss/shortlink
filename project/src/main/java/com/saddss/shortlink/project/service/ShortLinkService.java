@@ -9,7 +9,10 @@ import com.saddss.shortlink.project.dto.req.ShortLinkUpdateReqDTO;
 import com.saddss.shortlink.project.dto.resp.ShortLinkCreateRespDTO;
 import com.saddss.shortlink.project.dto.resp.ShortLinkGroupCountQueryRespDTO;
 import com.saddss.shortlink.project.dto.resp.ShortLinkPageRespDTO;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface ShortLinkService extends IService<ShortLinkDO> {
@@ -34,5 +37,17 @@ public interface ShortLinkService extends IService<ShortLinkDO> {
      */
     List<ShortLinkGroupCountQueryRespDTO> getShortLinkCountInGroup(List<String> requestParam);
 
+    /**
+     * 修改短链接信息
+     * @param requestParam 修改短链接信息请求参数
+     */
     void updateShortLink(ShortLinkUpdateReqDTO requestParam);
+
+    /**
+     * 跳转至原始链接
+     * @param shortUrl 短链接
+     * @param request http请求
+     * @param response http响应
+     */
+    void jumpToOriginUrl(String shortUrl, HttpServletRequest request, HttpServletResponse response) throws IOException;
 }
