@@ -25,6 +25,7 @@ import com.saddss.shortlink.project.dto.resp.ShortLinkGroupCountQueryRespDTO;
 import com.saddss.shortlink.project.dto.resp.ShortLinkPageRespDTO;
 import com.saddss.shortlink.project.service.ShortLinkService;
 import com.saddss.shortlink.project.util.HashUtil;
+import com.saddss.shortlink.project.util.LinkUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
@@ -87,10 +88,14 @@ public class ShortLinkServiceImpl extends ServiceImpl<ShortLinkMapper, ShortLink
         } catch (DuplicateKeyException ex) {
             log.warn("短链接: {} 重复入库", fullShortUrl);
         }
+        stringRedisTemplate.opsForValue().set(
+                String.format(RedisKeyConstant.GOTO_SHORT_LINK_KEY, fullShortUrl),
+                requestParam.getOriginUrl(), LinkUtil.getLinkCacheValidTime(requestParam.getValidDate()),
+                TimeUnit.MICROSECONDS);
         shortUriCreateCachePenetrationBloomFilter.add(fullShortUrl);
         return ShortLinkCreateRespDTO.builder()
                 .gid(requestParam.getGid())
-                .fullShortUrl("http" + fullShortUrl)
+                .fullShortUrl("http://" + fullShortUrl)
                 .originUrl(requestParam.getOriginUrl())
                 .build();
     }
