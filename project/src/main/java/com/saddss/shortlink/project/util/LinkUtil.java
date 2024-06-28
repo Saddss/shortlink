@@ -19,7 +19,6 @@ public class LinkUtil {
      * @return 有限期时间戳
      */
     public static long getLinkCacheValidTime(Date validDate) {
-        System.out.println(DateUtil.between(new Date(), validDate, DateUnit.MS));
         return Optional.ofNullable(validDate)
                 .map(each -> DateUtil.between(new Date(), each, DateUnit.MS))
                 .orElse(ShortLinkConstant.DEFAULT_CACHE_VALID_TIME);
