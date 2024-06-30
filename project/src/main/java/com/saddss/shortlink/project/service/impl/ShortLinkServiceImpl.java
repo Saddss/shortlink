@@ -3,10 +3,10 @@ package com.saddss.shortlink.project.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.date.Week;
+import cn.hutool.core.lang.UUID;
 import cn.hutool.core.text.StrBuilder;
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.StrUtil;
-import cn.hutool.core.lang.UUID;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
@@ -243,17 +243,21 @@ public class ShortLinkServiceImpl extends ServiceImpl<ShortLinkMapper, ShortLink
                 uvCookie.setPath(StrUtil.sub(fullShortUrl, fullShortUrl.indexOf("/"), fullShortUrl.length()));
                 response.addCookie(uvCookie);
                 uvFirstFlag.set(Boolean.TRUE);
-                stringRedisTemplate.opsForSet().add("short-link:stats:uv:" + fullShortUrl, uv);
+                //stringRedisTemplate.opsForSet().add("short-link:stats:uv:" + fullShortUrl, uv);
             };
             if (ArrayUtil.isNotEmpty(cookies)){
+//                Arrays.stream(cookies)
+//                        .filter(each -> Objects.equals(each.getName(), "uv"))
+//                        .findFirst()
+//                        .map(Cookie::getValue)
+//                        .ifPresentOrElse(each -> {
+//                            Long add = stringRedisTemplate.opsForSet().add("short-link:stats:uv:" + fullShortUrl, each);
+//                            uvFirstFlag.set(add != null && add > 0L);
+//                        }, addResponseCookieTask);
                 Arrays.stream(cookies)
                         .filter(each -> Objects.equals(each.getName(), "uv"))
                         .findFirst()
-                        .map(Cookie::getValue)
-                        .ifPresentOrElse(each -> {
-                            Long add = stringRedisTemplate.opsForSet().add("short-link:stats:uv:" + fullShortUrl, each);
-                            uvFirstFlag.set(add != null && add > 0L);
-                        }, addResponseCookieTask);
+                        .ifPresent(cookie -> {});
             }else{
                 addResponseCookieTask.run();
             }
