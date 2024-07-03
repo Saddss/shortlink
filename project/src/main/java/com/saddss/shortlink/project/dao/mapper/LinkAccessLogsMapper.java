@@ -41,8 +41,10 @@ public interface LinkAccessLogsMapper extends BaseMapper<LinkAccessLogsDO> {
             "    SUM(new_user) AS newUserCnt " +
             "FROM ( " +
             "    SELECT " +
-            "        CASE WHEN COUNT(DISTINCT DATE(create_time)) > 1 THEN 1 ELSE 0 END AS old_user, " +
-            "        CASE WHEN COUNT(DISTINCT DATE(create_time)) = 1 AND MAX(create_time) >= #{param.startDate} AND MAX(create_time) <= #{param.endDate} THEN 1 ELSE 0 END AS new_user " +
+            "        CASE WHEN COUNT(DISTINCT DATE(create_time)) > 1 AND MAX(create_time) >= CONCAT(#{param.startDate}, ' 00:00:00') " +
+            "               AND MAX(create_time) <= CONCAT(#{param.endDate}, ' 23:59:59') THEN 1 ELSE 0 END AS old_user, " +
+            "        CASE WHEN COUNT(DISTINCT DATE(create_time)) = 1 AND MAX(create_time) >= CONCAT(#{param.startDate}, ' 00:00:00') " +
+            "               AND MAX(create_time) <= CONCAT(#{param.endDate}, ' 23:59:59') THEN 1 ELSE 0 END AS new_user " +
             "    FROM " +
             "        t_link_access_logs " +
             "    WHERE " +
