@@ -6,7 +6,9 @@ import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.TypeReference;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.saddss.shortlink.admin.common.convention.result.Result;
+import com.saddss.shortlink.admin.dto.req.ShortLinkStatsAccessRecordReqDTO;
 import com.saddss.shortlink.admin.dto.req.ShortLinkStatsReqDTO;
+import com.saddss.shortlink.admin.dto.resp.ShortLinkStatsAccessRecordRespDTO;
 import com.saddss.shortlink.admin.dto.resp.ShortLinkStatsRespDTO;
 import com.saddss.shortlink.admin.remote.dto.req.*;
 import com.saddss.shortlink.admin.remote.dto.resp.ShortLinkCreateRespDTO;
@@ -105,6 +107,25 @@ public interface ShortLinkRemoteService {
      */
     default Result<ShortLinkStatsRespDTO> oneShortLinkStats(ShortLinkStatsReqDTO requestParam) {
         String resultBodyStr = HttpUtil.get("http://127.0.0.1:8001/api/short-link/v1/stats", BeanUtil.beanToMap(requestParam));
+        return JSON.parseObject(resultBodyStr, new TypeReference<>() {
+        });
+    }
+
+    /**
+     * 访问单个短链接指定时间内监控访问记录数据
+     *
+     * @param requestParam 访问短链接监控访问记录请求参数
+     * @return 短链接监控访问记录信息
+     */
+    default Result<IPage<ShortLinkStatsAccessRecordRespDTO>> shortLinkStatsAccessRecord(ShortLinkStatsAccessRecordReqDTO requestParam) {
+        Map<String, Object> requestMap = new HashMap<>();
+        requestMap.put("fullShortUrl", requestParam.getFullShortUrl());
+        requestMap.put("gid", requestParam.getGid());
+        requestMap.put("startDate", requestParam.getStartDate());
+        requestMap.put("endDate", requestParam.getEndDate());
+        requestMap.put("current", requestParam.getCurrent());
+        requestMap.put("size", requestParam.getSize());
+        String resultBodyStr = HttpUtil.get("http://127.0.0.1:8001/api/short-link/v1/stats/access-record", requestMap);
         return JSON.parseObject(resultBodyStr, new TypeReference<>() {
         });
     }
