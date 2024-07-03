@@ -1,4 +1,4 @@
-package com.saddss.shortlink.admin.dto.resp;
+package com.saddss.shortlink.admin.remote.dto.resp;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -6,13 +6,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * 短链接访问网络监控响应参数
+ * 短链接访问设备监控响应参数
  */
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ShortLinkStatsNetworkRespDTO {
+public class ShortLinkStatsDeviceRespDTO {
 
     /**
      * 统计
@@ -20,9 +20,9 @@ public class ShortLinkStatsNetworkRespDTO {
     private Integer cnt;
 
     /**
-     * 访问网络
+     * 设备类型
      */
-    private String network;
+    private String device;
 
     /**
      * 占比

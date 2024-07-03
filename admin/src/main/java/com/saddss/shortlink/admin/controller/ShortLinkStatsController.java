@@ -3,10 +3,10 @@ package com.saddss.shortlink.admin.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.saddss.shortlink.admin.common.convention.result.Result;
-import com.saddss.shortlink.admin.dto.req.ShortLinkStatsAccessRecordReqDTO;
-import com.saddss.shortlink.admin.dto.req.ShortLinkStatsReqDTO;
-import com.saddss.shortlink.admin.dto.resp.ShortLinkStatsAccessRecordRespDTO;
-import com.saddss.shortlink.admin.dto.resp.ShortLinkStatsRespDTO;
+import com.saddss.shortlink.admin.remote.dto.req.ShortLinkStatsAccessRecordReqDTO;
+import com.saddss.shortlink.admin.remote.dto.req.ShortLinkStatsReqDTO;
+import com.saddss.shortlink.admin.remote.dto.resp.ShortLinkStatsAccessRecordRespDTO;
+import com.saddss.shortlink.admin.remote.dto.resp.ShortLinkStatsRespDTO;
 import com.saddss.shortlink.admin.remote.ShortLinkRemoteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;

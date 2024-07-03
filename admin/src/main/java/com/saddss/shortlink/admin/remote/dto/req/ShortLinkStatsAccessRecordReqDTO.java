@@ -1,4 +1,4 @@
-package com.saddss.shortlink.admin.dto.req;
+package com.saddss.shortlink.admin.remote.dto.req;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.Data;

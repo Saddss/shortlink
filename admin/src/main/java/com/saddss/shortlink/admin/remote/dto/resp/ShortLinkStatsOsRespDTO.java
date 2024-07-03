@@ -1,4 +1,4 @@
-package com.saddss.shortlink.admin.dto.resp;
+package com.saddss.shortlink.admin.remote.dto.resp;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -6,13 +6,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * 短链接高频访问IP监控响应参数
+ * 短链接操作系统监控响应参数
  */
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ShortLinkStatsTopIpRespDTO {
+public class ShortLinkStatsOsRespDTO {
 
     /**
      * 统计
@@ -20,7 +20,12 @@ public class ShortLinkStatsTopIpRespDTO {
     private Integer cnt;
 
     /**
-     * IP
+     * 操作系统
      */
-    private String ip;
+    private String os;
+
+    /**
+     * 占比
+     */
+    private Double ratio;
 }
