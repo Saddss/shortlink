@@ -42,8 +42,6 @@ public class ShortLinkStatsServiceImpl implements ShortLinkStatsService {
         if (CollUtil.isEmpty(listStatsByShortLink)) {
             return null;
         }
-        // 基础访问信息
-        LinkAccessStatsDO pvUvUidStatsByShortLink = linkAccessLogsMapper.findPvUvUidStatsByShortLink(requestParam);
         // 基础访问详情
         List<ShortLinkStatsAccessDailyRespDTO> daily = new ArrayList<>();
         List<String> rangeDates = DateUtil.rangeToList(DateUtil.parse(requestParam.getStartDate()), DateUtil.parse(requestParam.getEndDate()), DateField.DAY_OF_MONTH).stream()
@@ -69,6 +67,20 @@ public class ShortLinkStatsServiceImpl implements ShortLinkStatsService {
                             .build();
                     daily.add(accessDailyRespDTO);
                 }));
+        // 基础访问信息
+        //LinkAccessStatsDO pvUvUidStatsByShortLink = linkAccessLogsMapper.findPvUvUidStatsByShortLink(requestParam);
+        int pv = daily.stream()
+                .map(ShortLinkStatsAccessDailyRespDTO::getPv)
+                .mapToInt(Integer::intValue)
+                .sum();
+        int uv = daily.stream()
+                .map(ShortLinkStatsAccessDailyRespDTO::getUv)
+                .mapToInt(Integer::intValue)
+                .sum();
+        int uip = daily.stream()
+                .map(ShortLinkStatsAccessDailyRespDTO::getUip)
+                .mapToInt(Integer::intValue)
+                .sum();
         // 地区访问详情（仅国内）
         List<ShortLinkStatsLocaleCNRespDTO> localeCnStats = new ArrayList<>();
         List<LinkLocaleStatsDO> listedLocaleByShortLink = linkLocaleStatsMapper.listLocaleByShortLink(requestParam);
@@ -216,9 +228,12 @@ public class ShortLinkStatsServiceImpl implements ShortLinkStatsService {
             networkStats.add(networkRespDTO);
         });
         return ShortLinkStatsRespDTO.builder()
-                .pv(pvUvUidStatsByShortLink.getPv())
-                .uv(pvUvUidStatsByShortLink.getUv())
-                .uip(pvUvUidStatsByShortLink.getUip())
+//                .pv(pvUvUidStatsByShortLink.getPv())
+//                .uv(pvUvUidStatsByShortLink.getUv())
+//                .uip(pvUvUidStatsByShortLink.getUip())
+                .pv(pv)
+                .uv(uv)
+                .uip(uip)
                 .daily(daily)
                 .localeCnStats(localeCnStats)
                 .hourStats(hourStats)
