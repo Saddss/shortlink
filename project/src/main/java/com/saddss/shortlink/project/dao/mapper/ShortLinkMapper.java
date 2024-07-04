@@ -3,16 +3,16 @@ package com.saddss.shortlink.project.dao.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.saddss.shortlink.project.dao.entity.ShortLinkDO;
-import com.saddss.shortlink.project.dto.req.ShortLinkRecycleBinPageReqDTO;
+import com.saddss.shortlink.project.dto.req.ShortLinkPageReqDTO;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Update;
 
 public interface ShortLinkMapper extends BaseMapper<ShortLinkDO> {
 
-    /**
-     * 分页统计回收站短链接
-     */
-    IPage<ShortLinkDO> pageRecycleBinLink(ShortLinkRecycleBinPageReqDTO requestParam);
+//    /**
+//     * 分页统计回收站短链接
+//     */
+//    IPage<ShortLinkDO> pageRecycleBinLink(ShortLinkRecycleBinPageReqDTO requestParam);
 
     /**
      * 短链接访问统计自增
@@ -25,4 +25,9 @@ public interface ShortLinkMapper extends BaseMapper<ShortLinkDO> {
             @Param("totalUv") Integer totalUv,
             @Param("totalUip") Integer totalUip
     );
+
+    /**
+     * 分页统计短链接
+     */
+    IPage<ShortLinkDO> pageLink(ShortLinkPageReqDTO requestParam);
 }
