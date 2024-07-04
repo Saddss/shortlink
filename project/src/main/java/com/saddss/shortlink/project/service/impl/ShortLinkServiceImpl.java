@@ -53,6 +53,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -74,7 +76,7 @@ public class ShortLinkServiceImpl extends ServiceImpl<ShortLinkMapper, ShortLink
     private final LinkAccessLogsMapper linkAccessLogsMapper;
     private final LinkDeviceStatsMapper linkDeviceStatsMapper;
     private final LinkNetworkStatsMapper linkNetworkStatsMapper;
-
+    private final LinkStatsTodayMapper linkStatsTodayMapper;
 
 
     @Value("${short-link.stats.locale.amap-key}")
@@ -373,9 +375,39 @@ public class ShortLinkServiceImpl extends ServiceImpl<ShortLinkMapper, ShortLink
                     .build();
             linkAccessLogsMapper.insert(linkAccessLogsDO);
             baseMapper.incrementStats(gid, fullShortUrl, 1, uvFirstFlag.get() ? 1 : 0, uipFirstFlag ? 1 : 0);
+            Long todayAddUv = stringRedisTemplate.opsForSet().add("short-link:stats:today:uv:" + fullShortUrl, uv.get());
+            boolean todayUvFirstFlag = todayAddUv != null && todayAddUv > 0L;
+            if (todayUvFirstFlag) {
+                stringRedisTemplate.expire("short-link:stats:today:uv:" + fullShortUrl, secondsUntilTomorrow(), TimeUnit.SECONDS);
+            }
+            Long todayAddUip = stringRedisTemplate.opsForSet().add("short-link:stats:today:uip:" + fullShortUrl, actualIp);
+            boolean todayUipFirstFlag = todayAddUip != null && todayAddUip > 0L;
+            if (todayUipFirstFlag) {
+                stringRedisTemplate.expire("short-link:stats:today:uip:" + fullShortUrl, secondsUntilTomorrow(), TimeUnit.SECONDS);
+            }
+            LinkStatsTodayDO linkStatsTodayDO = LinkStatsTodayDO.builder()
+                    .todayPv(1)
+                    .todayUv(todayUvFirstFlag ? 1 : 0)
+                    .todayUip(todayUipFirstFlag ? 1 : 0)
+                    .gid(gid)
+                    .fullShortUrl(fullShortUrl)
+                    .date(new Date())
+                    .build();
+            linkStatsTodayMapper.shortLinkTodayState(linkStatsTodayDO);
         } catch (Throwable ex) {
             log.error("短链接访问量统计异常", ex);
         }
+    }
+
+    public long secondsUntilTomorrow() {
+        // 获取当前时间
+        LocalDateTime now = LocalDateTime.now();
+        // 计算明天0点的时间
+        LocalDateTime tomorrowMidnight = now.plusDays(1).withHour(0).withMinute(0).withSecond(0).withNano(0);
+        // 计算当前时间到明天0点的时间差，以秒为单位
+        long secondsUntilTomorrow = ChronoUnit.SECONDS.between(now, tomorrowMidnight);
+
+        return secondsUntilTomorrow;
     }
     @Override
     public IPage<ShortLinkPageRespDTO> getPage(ShortLinkPageReqDTO requestParam) {
