@@ -4,6 +4,7 @@ package com.saddss.shortlink.project.dao.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.saddss.shortlink.project.dao.entity.LinkAccessLogsDO;
 import com.saddss.shortlink.project.dao.entity.LinkAccessStatsDO;
+import com.saddss.shortlink.project.dto.req.ShortLinkGroupStatsReqDTO;
 import com.saddss.shortlink.project.dto.req.ShortLinkStatsReqDTO;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -104,4 +105,22 @@ public interface LinkAccessLogsMapper extends BaseMapper<LinkAccessLogsDO> {
             "GROUP BY " +
             "    full_short_url, gid;")
     LinkAccessStatsDO findPvUvUidStatsByShortLink(@Param("param") ShortLinkStatsReqDTO requestParam);
+
+    /**
+     * 根据分组获取指定日期内高频访问IP数据
+     */
+    @Select("SELECT " +
+            "    ip, " +
+            "    COUNT(ip) AS count " +
+            "FROM " +
+            "    t_link_access_logs " +
+            "WHERE " +
+            "    gid = #{param.gid} " +
+            "    AND create_time BETWEEN CONCAT(#{param.startDate}, ' 00:00:00') and CONCAT(#{param.endDate},' 23:59:59') " +
+            "GROUP BY " +
+            "    gid, ip " +
+            "ORDER BY " +
+            "    count DESC " +
+            "LIMIT 5;")
+    List<HashMap<String, Object>> listTopIpByGroup(@Param("param") ShortLinkGroupStatsReqDTO requestParam);
 }
