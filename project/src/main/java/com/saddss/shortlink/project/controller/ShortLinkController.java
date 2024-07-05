@@ -3,9 +3,11 @@ package com.saddss.shortlink.project.controller;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.saddss.shortlink.project.common.convention.result.Result;
 import com.saddss.shortlink.project.common.convention.result.Results;
+import com.saddss.shortlink.project.dto.req.ShortLinkBatchCreateReqDTO;
 import com.saddss.shortlink.project.dto.req.ShortLinkCreateReqDTO;
 import com.saddss.shortlink.project.dto.req.ShortLinkPageReqDTO;
 import com.saddss.shortlink.project.dto.req.ShortLinkUpdateReqDTO;
+import com.saddss.shortlink.project.dto.resp.ShortLinkBatchCreateRespDTO;
 import com.saddss.shortlink.project.dto.resp.ShortLinkCreateRespDTO;
 import com.saddss.shortlink.project.dto.resp.ShortLinkGroupCountQueryRespDTO;
 import com.saddss.shortlink.project.dto.resp.ShortLinkPageRespDTO;
@@ -63,6 +65,14 @@ public class ShortLinkController {
     @GetMapping("/{short-url}")
     public void jumpToOriginUrl(@PathVariable("short-url") String shortUrl, HttpServletRequest request, HttpServletResponse response) throws IOException {
         shortLinkService.jumpToOriginUrl(shortUrl, request, response);
+    }
+
+    /**
+     * 批量创建短链接
+     */
+    @PostMapping("/api/short-link/v1/create/batch")
+    public Result<ShortLinkBatchCreateRespDTO> batchCreateShortLink(@RequestBody ShortLinkBatchCreateReqDTO requestParam) {
+        return Results.success(shortLinkService.batchCreateShortLink(requestParam));
     }
 
 }
