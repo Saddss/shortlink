@@ -23,7 +23,12 @@ short-link:
   stats:
     locale:
       amap-key: 1b999f95a2c95b8927dbd43b18a2a1ee
-
+  goto-domain:
+    white-list:
+      enable: true
+      names: '4399小游戏'
+      details:
+        - 4399.com
 mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
