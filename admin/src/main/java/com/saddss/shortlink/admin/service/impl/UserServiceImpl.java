@@ -10,6 +10,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.saddss.shortlink.admin.common.biz.user.UserContext;
 import com.saddss.shortlink.admin.common.constant.RedisCacheConstant;
 import com.saddss.shortlink.admin.common.convention.exception.ClientException;
+import com.saddss.shortlink.admin.common.convention.exception.ServiceException;
 import com.saddss.shortlink.admin.common.enums.UserErrorCodeEnum;
 import com.saddss.shortlink.admin.dao.entity.UserDO;
 import com.saddss.shortlink.admin.dao.mapper.UserMapper;
@@ -107,7 +108,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
                 .eq(UserDO::getDelFlag, 0);
         UserDO userDO = baseMapper.selectOne(queryWrapper);
         if (userDO == null){
-            throw new ClientException(UserErrorCodeEnum.USERNAME_OR_PASSWORD_ERROR);
+            throw new ServiceException(UserErrorCodeEnum.USERNAME_OR_PASSWORD_ERROR);
         }
         Map<Object, Object> hasLoginMap = stringRedisTemplate.opsForHash().entries(USER_LOGIN_KEY + requestParam.getUsername());
         if (CollUtil.isNotEmpty(hasLoginMap)) {
