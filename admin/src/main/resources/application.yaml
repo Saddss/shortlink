@@ -12,3 +12,6 @@ spring:
       host: 43.138.26.5
       port: 6379
       password: hoj123456
+short-link:
+  group:
+    max-num: 20
