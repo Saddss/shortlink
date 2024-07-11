@@ -20,6 +20,7 @@ import com.saddss.shortlink.project.common.enums.VailDateTypeEnum;
 import com.saddss.shortlink.project.config.GotoDomainWhiteListConfiguration;
 import com.saddss.shortlink.project.dao.entity.*;
 import com.saddss.shortlink.project.dao.mapper.*;
+import com.saddss.shortlink.project.dto.biz.ShortLinkStatsRecordDTO;
 import com.saddss.shortlink.project.dto.req.*;
 import com.saddss.shortlink.project.dto.resp.*;
 import com.saddss.shortlink.project.mq.producer.DelayShortLinkStatsProducer;

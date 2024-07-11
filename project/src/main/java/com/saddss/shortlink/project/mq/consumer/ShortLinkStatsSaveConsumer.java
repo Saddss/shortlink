@@ -11,7 +11,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.saddss.shortlink.project.common.convention.exception.ServiceException;
 import com.saddss.shortlink.project.dao.entity.*;
 import com.saddss.shortlink.project.dao.mapper.*;
-import com.saddss.shortlink.project.dto.req.ShortLinkStatsRecordDTO;
+import com.saddss.shortlink.project.dto.biz.ShortLinkStatsRecordDTO;
 import com.saddss.shortlink.project.mq.idempotent.MessageQueueIdempotentHandler;
 import com.saddss.shortlink.project.mq.producer.DelayShortLinkStatsProducer;
 import lombok.RequiredArgsConstructor;
@@ -83,6 +83,7 @@ public class ShortLinkStatsSaveConsumer implements StreamListener<String, MapRec
         } catch (Throwable ex) {
             // 某某某情况宕机了
             messageQueueIdempotentHandler.delMessageProcessed(id.toString());
+            log.error("延迟记录短链接监控消费异常", ex);
             throw new ServiceException("记录短链接监控消费异常");
         }
         messageQueueIdempotentHandler.setAccomplish(id.toString());

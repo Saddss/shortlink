@@ -1,4 +1,4 @@
-package com.saddss.shortlink.project.dto.req;
+package com.saddss.shortlink.project.dto.biz;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -58,4 +58,8 @@ public class ShortLinkStatsRecordDTO {
      * UIP访问标识
      */
     private Boolean uipFirstFlag;
+    /**
+     * 消息队列唯一标识
+     */
+    private String keys;
 }
