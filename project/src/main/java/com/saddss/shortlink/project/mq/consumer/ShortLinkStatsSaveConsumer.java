@@ -95,7 +95,6 @@ public class ShortLinkStatsSaveConsumer implements StreamListener<String, MapRec
         // 计算明天0点的时间
         LocalDateTime tomorrowMidnight = now.plusDays(1).withHour(0).withMinute(0).withSecond(0).withNano(0);
         // 计算当前时间到明天0点的时间差，以秒为单位
-
         return ChronoUnit.SECONDS.between(now, tomorrowMidnight);
     }
 
