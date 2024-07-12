@@ -17,6 +17,7 @@ import static com.saddss.shortlink.project.common.constant.RedisKeyConstant.DELA
  * 延迟消费短链接统计发送者
  */
 @Component
+@Deprecated
 @RequiredArgsConstructor
 public class DelayShortLinkStatsProducer {
 

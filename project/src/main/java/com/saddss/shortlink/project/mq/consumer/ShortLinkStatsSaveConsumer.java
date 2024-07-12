@@ -102,10 +102,7 @@ public class ShortLinkStatsSaveConsumer implements StreamListener<String, MapRec
         fullShortUrl = Optional.ofNullable(fullShortUrl).orElse(statsRecord.getFullShortUrl());
         RReadWriteLock readWriteLock = redissonClient.getReadWriteLock(String.format(LOCK_GID_UPDATE_KEY, fullShortUrl));
         RLock rLock = readWriteLock.readLock();
-        if (!rLock.tryLock()) {
-            delayShortLinkStatsProducer.send(statsRecord);
-            return;
-        }
+        rLock.lock();
         try {
             if (StrUtil.isBlank(gid)) {
                 LambdaQueryWrapper<ShortLinkGotoDO> queryWrapper = Wrappers.lambdaQuery(ShortLinkGotoDO.class)
