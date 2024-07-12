@@ -37,6 +37,7 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 import static com.saddss.shortlink.admin.common.constant.RedisCacheConstant.USER_LOGIN_KEY;
+import static com.saddss.shortlink.admin.common.enums.UserErrorCodeEnum.*;
 
 @Service
 @RequiredArgsConstructor
@@ -68,22 +69,22 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
     @Override
     public void register(UserRegisterReqDto requestParam) {
         if (!hasUsername(requestParam.getUsername())){
-            throw new ClientException(UserErrorCodeEnum.USER_NAME_EXIST);
+            throw new ClientException(USER_NAME_EXIST);
         }
         RLock lock = redissonClient.getLock(RedisCacheConstant.LOCK_USER_REGISTER_KEY + requestParam.getUsername());
+        if (!lock.tryLock()) {
+            throw new ClientException(USER_NAME_EXIST);
+        }
         try {
-            if (lock.tryLock()){
-                try {
-                    baseMapper.insert(BeanUtil.toBean(requestParam, UserDO.class));
-                } catch (DuplicateKeyException ex) {
-                    throw new ClientException(UserErrorCodeEnum.USER_SAVE_ERROR);
-                }
-                userRegisterCachePenetrationBloomFilter.add(requestParam.getUsername());
-                groupService.saveGroup(requestParam.getUsername(), new ShortLinkGroupSaveReqDTO("默认分组"));
-                return;
+            int inserted = baseMapper.insert(BeanUtil.toBean(requestParam, UserDO.class));
+            if (inserted < 1) {
+                throw new ClientException(USER_SAVE_ERROR);
             }
-            throw new ClientException(UserErrorCodeEnum.USER_NAME_EXIST);
-        } finally{
+            userRegisterCachePenetrationBloomFilter.add(requestParam.getUsername());
+            groupService.saveGroup(requestParam.getUsername(), new ShortLinkGroupSaveReqDTO("默认分组"));
+        } catch (DuplicateKeyException ex) {
+            throw new ClientException(USER_EXIST);
+        } finally {
             lock.unlock();
         }
     }
