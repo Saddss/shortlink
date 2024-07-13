@@ -67,6 +67,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void register(UserRegisterReqDto requestParam) {
         if (!hasUsername(requestParam.getUsername())){
             throw new ClientException(USER_NAME_EXIST);
@@ -80,8 +81,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
             if (inserted < 1) {
                 throw new ClientException(USER_SAVE_ERROR);
             }
-            userRegisterCachePenetrationBloomFilter.add(requestParam.getUsername());
             groupService.saveGroup(requestParam.getUsername(), new ShortLinkGroupSaveReqDTO("默认分组"));
+            userRegisterCachePenetrationBloomFilter.add(requestParam.getUsername());
         } catch (DuplicateKeyException ex) {
             throw new ClientException(USER_EXIST);
         } finally {
