@@ -38,6 +38,7 @@ short-link:
       names: '4399小游戏'
       details:
         - 4399.com
+        - 7k7k.com
 mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
