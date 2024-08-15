@@ -11,9 +11,8 @@ spring:
 
   data:
     redis:
-      host: 43.138.26.5
+      host: 127.0.0.1
       port: 6379
-      password: hoj123456
   cloud:
     nacos:
       discovery:
