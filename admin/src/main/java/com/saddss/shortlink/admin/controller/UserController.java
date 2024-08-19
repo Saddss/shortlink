@@ -1,10 +1,12 @@
 package com.saddss.shortlink.admin.controller;
 
+import cn.hutool.core.bean.BeanUtil;
 import com.saddss.shortlink.admin.common.convention.result.Result;
 import com.saddss.shortlink.admin.common.convention.result.Results;
 import com.saddss.shortlink.admin.dto.req.UserLoginReqDTO;
 import com.saddss.shortlink.admin.dto.req.UserRegisterReqDto;
 import com.saddss.shortlink.admin.dto.req.UserUpdateReqDto;
+import com.saddss.shortlink.admin.dto.resp.UserActualRespDTO;
 import com.saddss.shortlink.admin.dto.resp.UserLoginRespDTO;
 import com.saddss.shortlink.admin.dto.resp.UserRespDto;
 import com.saddss.shortlink.admin.service.UserService;
@@ -27,6 +29,14 @@ public class UserController {
     public Result<UserRespDto> getUserByUsername(@PathVariable("username") String username){
         UserRespDto result = userService.getUserByUsername(username);
         return Results.success(result);
+    }
+
+    /**
+     * 根据用户名查询无脱敏用户信息
+     */
+    @GetMapping("/api/short-link/admin/v1/actual/user/{username}")
+    public Result<UserActualRespDTO> getActualUserByUsername(@PathVariable("username") String username) {
+        return Results.success(BeanUtil.toBean(userService.getUserByUsername(username), UserActualRespDTO.class));
     }
 
     /**
