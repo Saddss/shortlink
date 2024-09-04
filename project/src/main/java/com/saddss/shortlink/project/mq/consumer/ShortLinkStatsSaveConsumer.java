@@ -19,12 +19,16 @@ import org.redisson.api.RLock;
 import org.redisson.api.RReadWriteLock;
 import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 import static com.saddss.shortlink.project.common.constant.RedisKeyConstant.LOCK_GID_UPDATE_KEY;
 import static com.saddss.shortlink.project.common.constant.ShortLinkConstant.AMAP_REMOTE_URL;
@@ -54,6 +58,7 @@ public class ShortLinkStatsSaveConsumer implements RocketMQListener<Map<String, 
     private final LinkNetworkStatsMapper linkNetworkStatsMapper;
     private final LinkStatsTodayMapper linkStatsTodayMapper;
     private final MessageQueueIdempotentHandler messageQueueIdempotentHandler;
+    private final StringRedisTemplate stringRedisTemplate;
 
     @Value("${short-link.stats.locale.amap-key}")
     private String statsLocaleAmapKey;
@@ -79,6 +84,15 @@ public class ShortLinkStatsSaveConsumer implements RocketMQListener<Map<String, 
             throw ex;
         }
         messageQueueIdempotentHandler.setAccomplish(keys);
+    }
+
+    public long secondsUntilTomorrow() {
+        // 获取当前时间
+        LocalDateTime now = LocalDateTime.now();
+        // 计算明天0点的时间
+        LocalDateTime tomorrowMidnight = now.plusDays(1).withHour(0).withMinute(0).withSecond(0).withNano(0);
+        // 计算当前时间到明天0点的时间差，以秒为单位
+        return ChronoUnit.SECONDS.between(now, tomorrowMidnight);
     }
 
     public void actualSaveShortLinkStats(ShortLinkStatsRecordDTO statsRecord) {
@@ -167,10 +181,20 @@ public class ShortLinkStatsSaveConsumer implements RocketMQListener<Map<String, 
                     .build();
             linkAccessLogsMapper.insert(linkAccessLogsDO);
             shortLinkMapper.incrementStats(gid, fullShortUrl, 1, statsRecord.getUvFirstFlag() ? 1 : 0, statsRecord.getUipFirstFlag() ? 1 : 0);
+            Long todayAddUv = stringRedisTemplate.opsForSet().add("short-link:stats:today:uv:" + fullShortUrl, statsRecord.getUv());
+            boolean todayUvFirstFlag = todayAddUv != null && todayAddUv > 0L;
+            if (todayUvFirstFlag) {
+                stringRedisTemplate.expire("short-link:stats:today:uv:" + fullShortUrl, secondsUntilTomorrow(), TimeUnit.SECONDS);
+            }
+            Long todayAddUip = stringRedisTemplate.opsForSet().add("short-link:stats:today:uip:" + fullShortUrl, statsRecord.getRemoteAddr());
+            boolean todayUipFirstFlag = todayAddUip != null && todayAddUip > 0L;
+            if (todayUipFirstFlag) {
+                stringRedisTemplate.expire("short-link:stats:today:uip:" + fullShortUrl, secondsUntilTomorrow(), TimeUnit.SECONDS);
+            }
             LinkStatsTodayDO linkStatsTodayDO = LinkStatsTodayDO.builder()
                     .todayPv(1)
-                    .todayUv(statsRecord.getUvFirstFlag() ? 1 : 0)
-                    .todayUip(statsRecord.getUipFirstFlag() ? 1 : 0)
+                    .todayUv(todayUvFirstFlag ? 1 : 0)
+                    .todayUip(todayUipFirstFlag ? 1 : 0)
                     .fullShortUrl(fullShortUrl)
                     .date(currentDate)
                     .build();
