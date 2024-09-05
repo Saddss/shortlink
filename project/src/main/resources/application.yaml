@@ -42,7 +42,7 @@ mybatis-plus:
   mapper-locations: classpath:mapper/*.xml
 
 rocketmq:
-  name-server: common-rocketmq-dev.magestack.cn:9876
+  name-server: localhost:9876
   producer:
     group: link-server_project-service_stats-save_pg
     topic: link-server_project-service_topic

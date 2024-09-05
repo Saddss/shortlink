@@ -15,6 +15,8 @@ import com.saddss.shortlink.project.dto.biz.ShortLinkStatsRecordDTO;
 import com.saddss.shortlink.project.mq.idempotent.MessageQueueIdempotentHandler;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;
+import org.apache.rocketmq.spring.core.RocketMQListener;
 import org.redisson.api.RLock;
 import org.redisson.api.RReadWriteLock;
 import org.redisson.api.RedissonClient;
@@ -27,7 +29,6 @@ import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 import static com.saddss.shortlink.project.common.constant.RedisKeyConstant.LOCK_GID_UPDATE_KEY;
@@ -41,8 +42,8 @@ import static com.saddss.shortlink.project.common.constant.ShortLinkConstant.AMA
 @Component
 @RequiredArgsConstructor
 @RocketMQMessageListener(
-        topic = "${rocketmq.producer.topic}",
-        consumerGroup = "${rocketmq.consumer.group}"
+        topic = "link-server_project-service_topic",
+        consumerGroup = "link-server_project-service_stats-save_cg"
 )
 public class ShortLinkStatsSaveConsumer implements RocketMQListener<Map<String, String>> {
 
@@ -66,7 +67,7 @@ public class ShortLinkStatsSaveConsumer implements RocketMQListener<Map<String, 
     @Override
     public void onMessage(Map<String, String> producerMap) {
         String keys = producerMap.get("keys");
-        if (!messageQueueIdempotentHandler.isMessageProcessed(keys)) {
+        if (messageQueueIdempotentHandler.isMessageProcessed(keys)) {
             // 判断当前的这个消息流程是否执行完成
             if (messageQueueIdempotentHandler.isAccomplish(keys)) {
                 return;
@@ -74,13 +75,14 @@ public class ShortLinkStatsSaveConsumer implements RocketMQListener<Map<String, 
             throw new ServiceException("消息未完成流程，需要消息队列重试");
         }
         try {
-            String fullShortUrl = producerMap.get("fullShortUrl");
-            if (StrUtil.isNotBlank(fullShortUrl)) {
+            String statsRecordStr = producerMap.get("statsRecord");
+            if (StrUtil.isNotBlank(statsRecordStr)) {
                 ShortLinkStatsRecordDTO statsRecord = JSON.parseObject(producerMap.get("statsRecord"), ShortLinkStatsRecordDTO.class);
                 actualSaveShortLinkStats(statsRecord);
             }
         } catch (Throwable ex) {
             log.error("记录短链接监控消费异常", ex);
+            messageQueueIdempotentHandler.delMessageProcessed(keys);
             throw ex;
         }
         messageQueueIdempotentHandler.setAccomplish(keys);
